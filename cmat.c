@@ -54,11 +54,11 @@ void CojMat(mat *A, mat *result) {
 
 
 //Set all elements of a matrix to be zero
-void ZeroMat(mat A) {
+void ZeroMat(mat *A) {
 #pragma omp parallel for
-    for (int i = 0; i < A.row; i++) {
-        for (int j = 0; j < A.col; j++) {
-            A.mat[i][j] = 0;
+    for (int i = 0; i < A->row; i++) {
+        for (int j = 0; j < A->col; j++) {
+            A->mat[i][j] = 0;
         }
     }
 }

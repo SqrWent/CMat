@@ -9,20 +9,16 @@
 #include <omp.h>
 
 //Add two matrices.
-mat add(mat A, mat B) {
-    if ((A.row != B.row) | (A.col != B.col)) {
+void add(mat *A, mat *B, mat *result) {
+    if ((A->row != B->row) | (A->col != B->col)) {
         perror("Trying to add two matrices of different sizes.");
     }
-    mat result;
-    IniMat(&result, A.row, A.col);
-
 #pragma omp parallel for
-    for (int i = 0; i < A.row; i++) {
-        for (int j = 0; j < A.col; j++) {
-            result.mat[i][j] = A.mat[i][j] + B.mat[i][j];
+    for (int i = 0; i < A->row; i++) {
+        for (int j = 0; j < A->col; j++) {
+            result->mat[i][j] = A->mat[i][j] + B->mat[i][j];
         }
     }
-    return result;
 }
 
 
@@ -34,22 +30,19 @@ int _Min(int a, int b, int c, int d) {
 
 
 //Normal multiplication of two matrices
-mat NmMulMat(mat A, mat B) {
-    mat result;
-    IniMat(&result, A.row, B.col);
+void NmMulMat(mat *A, mat *B, mat *result) {
     int sum;
 #pragma omp parallel private(sum)
     {
 #pragma omp parallel for
-        for (int i = 0; i < A.row; i++) {
-            for (int j = 0; j < B.col; j++) {
+        for (int i = 0; i < A->row; i++) {
+            for (int j = 0; j < B->col; j++) {
                 sum = 0;
-                for (int k = 0; k < A.col; k++) {
-                    sum += A.mat[i][k] * B.mat[k][j];
+                for (int k = 0; k < A->col; k++) {
+                    sum += A->mat[i][k] * B->mat[k][j];
                 }
-                result.mat[i][j] = sum;
+                result->mat[i][j] = sum;
             }
         }
     }
-    return result;
 }

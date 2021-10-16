@@ -15,6 +15,6 @@ void TraMat(mat *A, mat *result);
 
 void CojMat(mat *A, mat *result);
 
-void ZeroMat(mat A);
+void ZeroMat(mat *A);
 
 #endif //CMAT_CMAT_H
