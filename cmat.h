@@ -17,4 +17,10 @@ void CojMat(mat *A, mat *result);
 
 void ZeroMat(mat *A);
 
+void add(mat *A, mat *B, mat *result);
+
+int _Min(int a, int b, int c, int d);
+
+void NmMulMat(mat *A, mat *B, mat *result);
+
 #endif //CMAT_CMAT_H

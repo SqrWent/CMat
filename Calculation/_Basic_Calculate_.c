@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <omp.h>
 
+
 //Add two matrices.
 void add(mat *A, mat *B, mat *result) {
     if ((A->row != B->row) | (A->col != B->col)) {

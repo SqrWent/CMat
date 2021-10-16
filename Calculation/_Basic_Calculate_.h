@@ -7,4 +7,10 @@
 
 #include "../cmat.h"
 
+void add(mat *A, mat *B, mat *result);
+
+int _Min(int a, int b, int c, int d);
+
+void NmMulMat(mat *A, mat *B, mat *result);
+
 #endif //CMAT__BASIC_CALCULATE__H
