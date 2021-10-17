@@ -12,7 +12,7 @@
 //Add two matrices.
 void add(mat *A, mat *B, mat *result) {
     if ((A->row != B->row) | (A->col != B->col)) {
-        perror("Trying to add two matrices of different sizes.");
+        perror("Trying to add two matrices of different sizes!");
     }
     for (int i = 0; i < A->row; i++) {
         for (int j = 0; j < A->col; j++) {
@@ -29,8 +29,11 @@ int _Min(int a, int b, int c, int d) {
 }
 
 
-//Normal multiplication of two matrices
+//Normal multiplication of two matrices, result matrix equals to neither A nor B!
 void NmMulMat(mat *A, mat *B, mat *result) {
+    if (A->col != B->row)
+        perror("Trying to multiply matrices with wrong dimensions!");
+
     int sum;
     {
         for (int i = 0; i < A->row; i++) {

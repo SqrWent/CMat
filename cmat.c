@@ -29,18 +29,39 @@ void FreMat(mat *A) {
 }
 
 
-//Get the transpose of a matrix and save the result to result
+//Get the transpose of a matrix and save the result to result, allowing the use of TraMat(&A, &A)
 void TraMat(mat *A, mat *result) {
-    for (int i = 0; i < A->row; i++) {
-        for (int j = 0; j < A->col; j++) {
-            result->mat[j][i] = A->mat[i][j];
+    if ((A->row != result->col) | (A->col != result->row))
+        perror("The dimension of output matrix doesn't match that of input one.");
+
+    //Following steps allow the use of TraMat(&A, &A)
+    if (A->row == A->col) {
+        double _Complex temp;
+        for (int i = 0; i < A->row; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                if (i == j) {
+                    result->mat[i][i] = A->mat[i][i];
+                } else {
+                    temp = A->mat[i][j];
+                    result->mat[i][j] = A->mat[j][i];
+                    result->mat[j][i] = temp;
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < A->row; i++) {
+            for (int j = 0; j < A->col; j++) {
+                result->mat[j][i] = A->mat[i][j];
+            }
         }
     }
 }
 
 
-//Get the conjugate of a matrix
+//Get the conjugation of a matrix, allowing the use of CojMat(&A, &A)
 void CojMat(mat *A, mat *result) {
+    if ((A->row != result->row) | (A->col != result->col))
+        perror("The dimension of output matrix doesn't match that of input one.");
     for (int i = 0; i < A->row; i++) {
         for (int j = 0; j < A->col; j++) {
             result->mat[i][j] = conj(A->mat[i][j]);
@@ -58,3 +79,20 @@ void ZeroMat(mat *A) {
     }
 }
 
+
+//ZeroInitialize the matrix
+void ZIniMat(mat *A, int row, int col) {
+    IniMat(A, row, col);
+    ZeroMat(A);
+}
+
+
+//Initial a matrix as identity of dimension dim
+void IIniMat(mat *A, int dim) {
+    IniMat(A, dim, dim);
+    for (int i = 0; i < dim; ++i) {
+        for (int j = 0; j < dim; ++j) {
+            A->mat[i][j] = (i == j) ? 1 : 0;
+        }
+    }
+}

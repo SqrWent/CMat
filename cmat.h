@@ -17,6 +17,10 @@ void CojMat(mat *A, mat *result);
 
 void ZeroMat(mat *A);
 
+void ZIniMat(mat *A, int row, int col);
+
+void IIniMat(mat *A, int dim);
+
 void add(mat *A, mat *B, mat *result);
 
 int _Min(int a, int b, int c, int d);
