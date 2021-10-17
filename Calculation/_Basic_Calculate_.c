@@ -84,7 +84,7 @@ void StrassenMulMat(mat *A, mat *B, mat *result) {
     if (dim == 1) {
         result->mat[0][0] = A->mat[0][0] * B->mat[0][0];
     } else {
-        int i;
+        int i, temp2, j, k, inirow, inicol;
         mat s[10];
         mat p[7];
         for (i = 0; i < 10; i++) {
@@ -97,17 +97,26 @@ void StrassenMulMat(mat *A, mat *B, mat *result) {
         mat b[4];
 
         //Seperate A and B into a[i],b[i]
-#pragma omp parallel for
-        for (i = 0; i < 4; i++) {
-            IniMat(&a[i], dim / 2, dim / 2);
-            IniMat(&b[i], dim / 2, dim / 2);
-            int j, k;
-            int inirow = (i < 2) * (dim / 2);
-            int inicol = (i % 2) * (dim / 2);
-            for (j = inirow; j < inirow + (dim / 2); j++) {
-                for (k = inicol; k < inicol + (dim / 2); k++) {
-                    a[i].mat[j - inirow][k - inicol] = A->mat[j][k];
-                    b[i].mat[j - inirow][k - inicol] = B->mat[j][k];
+#pragma omp parallel for private(j, k, inirow, inicol, temp2)
+        for (i = 0; i < 8; i++) {
+            if (i < 4) {
+                IniMat(&a[i], dim / 2, dim / 2);
+                inirow = (i < 2) * (dim / 2);
+                inicol = (i % 2) * (dim / 2);
+                for (j = inirow; j < inirow + (dim / 2); j++) {
+                    for (k = inicol; k < inicol + (dim / 2); k++) {
+                        a[i].mat[j - inirow][k - inicol] = A->mat[j][k];
+                    }
+                }
+            } else {
+                temp2 = i - 4;
+                IniMat(&b[temp2], dim / 2, dim / 2);
+                inirow = (temp2 < 2) * (dim / 2);
+                inicol = (temp2 % 2) * (dim / 2);
+                for (j = inirow; j < inirow + (dim / 2); j++) {
+                    for (k = inicol; k < inicol + (dim / 2); k++) {
+                        b[temp2].mat[j - inirow][k - inicol] = B->mat[j][k];
+                    }
                 }
             }
         }
