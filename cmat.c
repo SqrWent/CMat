@@ -12,7 +12,6 @@ void IniMat(mat *A, int row, int col) {
     A->row = row;
     A->col = col;
     A->mat = (double _Complex **) malloc(row * sizeof(double _Complex *));
-#pragma omp parallel for
     for (int i = 0; i < row; i++) {
         A->mat[i] = (double _Complex *) malloc(col * sizeof(double _Complex));
     }
@@ -21,7 +20,6 @@ void IniMat(mat *A, int row, int col) {
 
 //Free a matrix, don't use it on uninitialized matrix.
 void FreMat(mat *A) {
-#pragma omp parallel for
     for (int i = 0; i < A->row; i++) {
         free(A->mat[i]);
         A->mat[i] = NULL;
@@ -33,7 +31,6 @@ void FreMat(mat *A) {
 
 //Get the transpose of a matrix and save the result to result
 void TraMat(mat *A, mat *result) {
-#pragma omp parallel for
     for (int i = 0; i < A->row; i++) {
         for (int j = 0; j < A->col; j++) {
             result->mat[j][i] = A->mat[i][j];
@@ -44,7 +41,6 @@ void TraMat(mat *A, mat *result) {
 
 //Get the conjugate of a matrix
 void CojMat(mat *A, mat *result) {
-#pragma omp parallel for
     for (int i = 0; i < A->row; i++) {
         for (int j = 0; j < A->col; j++) {
             result->mat[i][j] = conj(A->mat[i][j]);
@@ -55,7 +51,6 @@ void CojMat(mat *A, mat *result) {
 
 //Set all elements of a matrix to be zero
 void ZeroMat(mat *A) {
-#pragma omp parallel for
     for (int i = 0; i < A->row; i++) {
         for (int j = 0; j < A->col; j++) {
             A->mat[i][j] = 0;
