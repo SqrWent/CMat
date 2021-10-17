@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "openmp-use-default-none"
 //
 // Created by 吕文韬 on 2021/10/16.
 //
@@ -33,8 +35,11 @@ int _Min(int a, int b, int c, int d) {
 void NmMulMat(mat *A, mat *B, mat *result) {
     if (A->col != B->row)
         perror("Trying to multiply matrices with wrong dimensions!");
+    if ((result->row != A->row) | (result->col != B->col))
+        perror("Dimension of output matrix doesn't match the input ones!");
 
-    int sum;
+    double _Complex sum;
+#pragma omp parallel for private(sum)
     {
         for (int i = 0; i < A->row; i++) {
             for (int j = 0; j < B->col; j++) {
@@ -47,3 +52,6 @@ void NmMulMat(mat *A, mat *B, mat *result) {
         }
     }
 }
+
+
+//Tensor product of two matrices.
